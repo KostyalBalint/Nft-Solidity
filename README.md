@@ -17,10 +17,16 @@ Homework owner: Bendegúz Gyönki
 2. Install [Solidity](https://marketplace.visualstudio.com/items?itemName=JuanBlanco.solidity) plugin for Visual Studio Code (used for proper syntax highlighting)
 3. Clone this project to a desired folder
 
-## Running the project
+## Installing dependencies
 
 ```bash
 npm install
+```
+
+## Building the Token
+
+```bash
+npm run compile
 ```
 
 ## Testing
