@@ -18,7 +18,7 @@ contract NftExample is ERC721, Ownable {
         uint256 newNftTokenId = _tokenIds.current();
         _mint(receiver, newNftTokenId);
         tokenURI(newNftTokenId);
-        
+        //comment
         return newNftTokenId;
     }
 }
