@@ -1,0 +1,29 @@
+{
+  "name": "nft-solidity",
+  "version": "1.0.0",
+  "description": "Homework for Blockchain class, creating an Nft ERC721 token using Solidity.",
+  "main": "index.js",
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.1.0"
+  },
+  "devDependencies": {
+    "@openzeppelin/test-environment": "^0.1.9",
+    "chai": "^4.3.4",
+    "mocha": "^8.3.2",
+    "truffle": "^5.3.4"
+  },
+  "scripts": {
+    "compile": "truffle compile",
+    "test": "truffle compile && mocha --exit --recursive"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KostyalBalint/Nft-Solidity.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KostyalBalint/Nft-Solidity/issues"
+  },
+  "homepage": "https://github.com/KostyalBalint/Nft-Solidity#readme"
+}

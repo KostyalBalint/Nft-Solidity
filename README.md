@@ -10,3 +10,25 @@ Design and implement an **ERC721 compliant digital image token.** (You can find 
 Each digital image token shall have a **unique identifier** and an **URL** (the location of the image). Users can **create new tokens** and then **buy and sell** them among themselves (in Solidity, for Ether. Otherwise, create some sort of *“unit of value”* on the ledger that we assume the participants accept). Each token should have one owner at any time. The number of tokens a user may own is not limited.
 
 Homework owner: Bendegúz Gyönki
+
+## Developer enviroment setup
+
+1. Install [Visual Studio Code](https://code.visualstudio.com)
+2. Install [Solidity](https://marketplace.visualstudio.com/items?itemName=JuanBlanco.solidity) plugin for Visual Studio Code (used for proper syntax highlighting)
+3. Clone this project to a desired folder
+
+## Running the project
+
+```bash
+npm install
+```
+
+## Testing
+
+Test files can be located under `/test` folder
+
+To run the tests run the following command
+
+```bash
+npm test
+```

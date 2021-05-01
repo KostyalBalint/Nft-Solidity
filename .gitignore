@@ -77,3 +77,9 @@ typings/
 
 # MacOs stuff
 .DS_Store
+
+# Solidity compile folder
+bin
+
+# Truffle build folder
+build
