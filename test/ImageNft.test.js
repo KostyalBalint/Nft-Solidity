@@ -1,19 +1,15 @@
-const { accounts, contract } = require('@openzeppelin/test-environment');
-const [ owner ] = accounts;
+const ImageNft = artifacts.require("ImageNft");
 
-const { expect } = require('chai');
+contract("ImageNft", (accounts) => {
+  it("shoud safeMint the 0-th token to the first address", async () => {
+    const imageNftInstance = await ImageNft.deployed();
+    //const accounts = await web3.eth.getAccounts();
+    const uriStr = "Token Uri";
 
-const imageNft = contract.fromArtifact('ImageNft'); // Loads a compiled contract
+    mageNftInstance.safeMint(accounts[0], 0, uriStr);
 
-describe('ImageNft', function () {
-  it('deployer is owner', async function () {
-    const imageNft = await imageNft.new({ from: owner });
-    expect(await imageNft.owner()).to.equal(owner);
-  });
-});
+    console.log(imageNftInstance.tokenURI(0));
 
-describe('ImageNft', function() {
-      it('create token', async function () {
-            
-      });
+    assert.equal(imageNftInstance.tokenURI(0), uriStr, `Token 0 shoud have URI String: ${uriStr}`);
+  })
 });

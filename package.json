@@ -15,7 +15,7 @@
   "scripts": {
     "compile": "truffle compile",
     "migrate": "truffle migrate",
-    "test": "truffle compile && mocha --exit --recursive"
+    "test": "truffle test"
   },
   "repository": {
     "type": "git",
