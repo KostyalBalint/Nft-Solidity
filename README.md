@@ -15,7 +15,8 @@ Homework owner: Bendegúz Gyönki
 
 1. Install [Visual Studio Code](https://code.visualstudio.com)
 2. Install [Solidity](https://marketplace.visualstudio.com/items?itemName=JuanBlanco.solidity) plugin for Visual Studio Code (used for proper syntax highlighting)
-3. Clone this project to a desired folder
+3. Install [Ganche](https://www.trufflesuite.com/ganache) for a local blockchain
+4. Clone this project to a desired folder
 
 ## Installing dependencies
 
