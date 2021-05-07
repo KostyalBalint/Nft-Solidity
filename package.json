@@ -4,7 +4,8 @@
   "description": "Homework for Blockchain class, creating an Nft ERC721 token using Solidity.",
   "main": "index.js",
   "dependencies": {
-    "@openzeppelin/contracts": "^4.1.0"
+    "@openzeppelin/contracts": "^4.1.0",
+    "node-fetch": "^2.6.1"
   },
   "devDependencies": {
     "@openzeppelin/test-environment": "^0.1.9",

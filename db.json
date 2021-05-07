@@ -1,0 +1,27 @@
+{
+      "token-uri-1": {
+            "name": "First token",
+            "description": "Description",
+            "image": "https://pic.weblogographic.com/img/technology-2017/difference-between-uri-and-url.jpg"
+      },
+      "token-uri-2": {
+            "name": "First token",
+            "description": "Description",
+            "image": "image url here"
+      },
+      "token-uri-3": {
+            "name": "First token",
+            "description": "Description",
+            "image": "image url here"
+      },
+      "token-uri-4": {
+            "name": "First token",
+            "description": "Description",
+            "image": "image url here"
+      },
+      "token-uri-5": {
+            "name": "First token",
+            "description": "Description",
+            "image": "image url here"
+      }
+}

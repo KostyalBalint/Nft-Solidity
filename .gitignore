@@ -83,3 +83,6 @@ bin
 
 # Truffle build folder
 build
+
+# Jetbrains Ide
+.idea
