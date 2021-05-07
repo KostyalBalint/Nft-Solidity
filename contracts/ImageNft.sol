@@ -5,17 +5,21 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract ImageNft is ERC721, ERC721URIStorage, Ownable {
-      mapping (uint256 => string) private _tokenURIs;
-      constructor() ERC721("ImageNft", "IMG") {}
+
+      uint256 nextId;   //TODO: Use openzeppelin counter class
+      constructor() ERC721("ImageNft", "IMG") {
+            nextId = 0;
+      }
 
       function _baseURI() internal view virtual override returns (string memory) {
             //Fake Json URI resource data can be found under db.json file
             return "https://my-json-server.typicode.com/KostyalBalint/Nft-Solidity/";
       }
 
-      function safeMint(address to, uint256 tokenId, string memory _tokenURI) public onlyOwner {
-            _safeMint(to, tokenId);
-            _setTokenURI(tokenId, _tokenURI);
+      function mint(string memory _tokenURI) public {
+            _safeMint(msg.sender, nextId);
+            _setTokenURI(nextId, _tokenURI);
+            nextId++;
       }
 
       function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
