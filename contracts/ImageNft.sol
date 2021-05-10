@@ -16,10 +16,14 @@ contract ImageNft is ERC721, ERC721URIStorage, Ownable {
             return "https://my-json-server.typicode.com/KostyalBalint/Nft-Solidity/";
       }
 
-      function mint(string memory _tokenURI) public {
+      function mint(string memory _tokenURI) public payable returns (uint256) {
+            //The creation of this token cost's a fixed 0.01 Ether
+            require(msg.value == 0.01 ether);
+
             _safeMint(msg.sender, nextId);
             _setTokenURI(nextId, _tokenURI);
             nextId++;
+            return nextId-1;
       }
 
       function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
