@@ -9,10 +9,15 @@ contract ImageNft is ERC721, ERC721URIStorage, Ownable {
       using Counters for Counters.Counter;
       Counters.Counter private _tokenIds;
       mapping(string => bool) _uriExists;
+      mapping(uint256 => uint256) _price; //If price is not 0, the token is for sale
 
       constructor() ERC721("ImageNft", "IMG") {}
 
       function _baseURI() internal view virtual override returns (string memory) {}
+
+      function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
+            super._burn(tokenId);
+      }
 
       function mint(string memory _tokenURI) public payable returns (uint256) {
             //The creation of this token cost's a fixed 0.01 Ether
@@ -29,16 +34,43 @@ contract ImageNft is ERC721, ERC721URIStorage, Ownable {
             return newItemId;
       }
 
-      function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
-            super._burn(tokenId);
-      }
-
       function tokenURI(uint256 tokenId) public view override(ERC721, ERC721URIStorage) returns (string memory)
       {
             require(_exists(tokenId), "ERC721Metadata: Token not exists");
             return super.tokenURI(tokenId);
       }
 
-      // TODO: maybe implement a buy / sale method like this: 
-      // https://ethereum.stackexchange.com/questions/56730/proper-way-to-implement-buyable-erc721-tokens
+      function setForSale(uint256 tokenId, uint256 tokenPrice) external {
+            require(tokenPrice != 0);
+            //TODO: Make tokenOwner modifyer
+            address owner = ownerOf(tokenId);   //ownerOf will revert if this is an invalid token
+            require(owner == msg.sender);
+
+            _price[tokenId] = tokenPrice;
+
+            //emit Approval(ownerOf(tokenId), address(this), tokenId);
+      }
+
+      function removeFromSale(uint256 tokenId) external {
+            address owner = ownerOf(tokenId);   //ownerOf will revert if this is an invalid token
+            require(owner == msg.sender);
+            _price[tokenId] = 0;
+      }
+
+      function buy(uint256 tokenId) external payable {
+            address buyer = msg.sender;
+            address seller = ownerOf(tokenId);
+            uint payedPrice = msg.value;
+
+            require(_price[tokenId] != 0, "This token is not for sale");
+            require(payedPrice >= _price[tokenId]);
+
+            // pay the seller
+            payable(seller).transfer(payedPrice);
+
+            // remove token from tokensForSale
+            _price[tokenId] = 0;
+
+            _transfer(seller, buyer, tokenId);
+      }
 }
