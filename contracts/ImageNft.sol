@@ -16,7 +16,7 @@ contract ImageNft is ERC721, ERC721URIStorage, Ownable {
 
       function mint(string memory _tokenURI) public payable returns (uint256) {
             //The creation of this token cost's a fixed 0.01 Ether
-            require(msg.value == 0.01 ether);
+            require(msg.value >= 0.01 ether);
             require(!_uriExists[_tokenURI]);    //Would be better to check the hash of the img on the uri
 
             _tokenIds.increment();
@@ -38,4 +38,7 @@ contract ImageNft is ERC721, ERC721URIStorage, Ownable {
             require(_exists(tokenId), "ERC721Metadata: Token not exists");
             return super.tokenURI(tokenId);
       }
+
+      // TODO: maybe implement a buy / sale method like this: 
+      // https://ethereum.stackexchange.com/questions/56730/proper-way-to-implement-buyable-erc721-tokens
 }

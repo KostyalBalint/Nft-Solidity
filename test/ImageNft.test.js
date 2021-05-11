@@ -6,8 +6,6 @@ const fetch = require('node-fetch');
 contract('ImageNft', (accounts) => {
   let imageNftContract;
 
-  //Deplye the contract once before the tests
-
   beforeEach(async () => {
     ImageNft.new();
     imageNftContract = await ImageNft.deployed();
@@ -32,14 +30,19 @@ contract('ImageNft', (accounts) => {
 
   describe('minting', () => {
     it('should cost 0.01 ether to mint a token', async () => {
-      let value = web3.utils.toWei('0.01', 'ether');
-      let balanceBefore = await web3.eth.getBalance(accounts[2]);
+      const value = web3.utils.toWei('0.01', 'ether');
+      const balanceBefore = await web3.eth.getBalance(accounts[2]);
       //Gas price set to 0 here to properly test the price
-      let tokenResult = await imageNftContract.mint('first-token-uri', {from: accounts[2], value, gasPrice: 0});
-      let balanceAfter = await web3.eth.getBalance(accounts[2]);
+      const tokenResult = await imageNftContract.mint('first-token-uri', {from: accounts[2], value, gasPrice: 0});
+      const balanceAfter = await web3.eth.getBalance(accounts[2]);
   
       assert.equal(balanceBefore - balanceAfter, value, 'Minting a token should const 0.01 ether');
-      //TODO: test transaction with lower price
+    });
+
+    it('should revet a transaction with lower ether', async () => {
+      const value = web3.utils.toWei('0.01', 'ether') - 1;
+      const account = accounts[3];
+      await expectRevert(imageNftContract.mint('first-token-uri', {from: account, value, gasPrice: 0}), "revert");
     });
   
     it('should have proper uri string of a minted token', async () => {
@@ -58,10 +61,19 @@ contract('ImageNft', (accounts) => {
 
   describe('transfer', async () => {
     it('should be transferable between users', async () => {
-      let ownerBefore = await imageNftContract.ownerOf(1);
+      const ownerBefore = await imageNftContract.ownerOf(1);
       await imageNftContract.transferFrom(ownerBefore, accounts[4], 1, {from: ownerBefore});
-      let ownerAfter = await imageNftContract.ownerOf(1);
+      const ownerAfter = await imageNftContract.ownerOf(1);
       assert.equal(ownerAfter, accounts[4], "Should transfer token between users");
+    });
+
+    it('should revet when transfer is not sent from the owner', async () => {
+      const owner = accounts[5];
+      const notOwner = accounts[6];
+      const result = await imageNftContract.mint('some-uri', {from: owner, value: web3.utils.toWei('0.01', 'ether')});
+      const tokenId = result.logs[0].args.tokenId;
+
+      await expectRevert(imageNftContract.transferFrom(owner, notOwner, tokenId, {from: notOwner}), "revert");
     });
   });
 
