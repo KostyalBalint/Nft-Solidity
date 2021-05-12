@@ -89,6 +89,7 @@ contract('ImageNft', (accounts) => {
       await imageNftContract.setForSale(tokenId, price, {from: owner});
       sellingTokens.push({tokenId, price});
     });
+
     it('should be the token set for sale for the given price ', async () => {
       const owner = accounts[3];
       const salePrice = web3.utils.toWei('0.4', 'ether');
@@ -97,7 +98,8 @@ contract('ImageNft', (accounts) => {
       await imageNftContract.setForSale(tokenId, salePrice, {from: owner}); 
       let priceResult = await imageNftContract.getTokenPrice(tokenId);
       assert.equal(priceResult, salePrice);
-    })
+    });
+
     it('should allow only the owner to set a token for sale', async () => {
       const owner = accounts[6];
       const price = web3.utils.toWei('0.1', 'ether');
