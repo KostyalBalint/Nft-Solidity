@@ -31,7 +31,7 @@ contract ImageNft is ERC721, ERC721URIStorage, Ownable {
             _safeMint(msg.sender, newItemId);
             _setTokenURI(newItemId, _tokenURI);
             _uriExists[_tokenURI] = true;
-            
+          // _price[newItemId]=0;
             return newItemId;
       }
 
