@@ -21,8 +21,9 @@ contract ImageNft is ERC721, ERC721URIStorage, Ownable {
 
       function mint(string memory _tokenURI) public payable returns (uint256) {
             //The creation of this token cost's a fixed 0.01 Ether
-            require(msg.value >= 0.01 ether);
-            require(!_uriExists[_tokenURI]);    //Would be better to check the hash of the img on the uri
+            require(msg.value >= 0.01 ether, "Minting a token costs 0.01 Ether");
+            //Would be better to check the hash of the img on the uri
+            require(!_uriExists[_tokenURI], "This token already exists");
 
             _tokenIds.increment();
             uint256 newItemId = _tokenIds.current();
@@ -40,8 +41,12 @@ contract ImageNft is ERC721, ERC721URIStorage, Ownable {
             return super.tokenURI(tokenId);
       }
 
+      function getTokenPrice(uint256 tokenId) public view returns (uint256){
+            return _price[tokenId];
+      }
+
       function setForSale(uint256 tokenId, uint256 tokenPrice) external onlyOwnerofToken(tokenId) {
-            require(tokenPrice != 0);
+            require(tokenPrice != 0, "Can't set a token for sale for 0 wei, concider using the transferFrom function");
             _price[tokenId] = tokenPrice;
 
             //emit Approval(ownerOf(tokenId), address(this), tokenId);
@@ -57,7 +62,7 @@ contract ImageNft is ERC721, ERC721URIStorage, Ownable {
             uint payedPrice = msg.value;
 
             require(_price[tokenId] != 0, "This token is not for sale");
-            require(payedPrice >= _price[tokenId]);
+            require(payedPrice >= _price[tokenId], "Payed price is lower than the sale price");
 
             // pay the seller
             payable(seller).transfer(payedPrice);
@@ -69,8 +74,9 @@ contract ImageNft is ERC721, ERC721URIStorage, Ownable {
       }
 
       modifier onlyOwnerofToken(uint256 tokenId) {
-      address owner = ownerOf(tokenId);   //ownerOf will revert if this is an invalid token
-      require(owner == msg.sender);
+      require(_exists(tokenId), "This token don't exist");
+      address owner = ownerOf(tokenId);
+      require(owner == msg.sender, "Function caller must be the owner of this token");
       _;
     }
 }

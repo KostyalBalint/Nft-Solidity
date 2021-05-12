@@ -120,12 +120,34 @@ contract('ImageNft', (accounts) => {
     });
 
     it('should not be able to buy a token which is not for sale', async () => {
+      const owner = accounts[3];
+      const buyer = accounts[4];
+      const result = await imageNftContract.mint('not-for-sale', {from: owner, value: web3.utils.toWei('0.01', 'ether')});
+      const tokenId = result.logs[0].args.tokenId;
+
+      await expectRevert(imageNftContract.buy(tokenId, {from: buyer, value: web3.utils.toWei('0.01', 'ether')}), "revert");
 
     });
 
     it('should remove the token from sale', async () => {
+      const owner = accounts[6];
+      const salePrice = web3.utils.toWei('0.4', 'ether');
+      const result = await imageNftContract.mint('remove-from-sale', {from: owner, value: web3.utils.toWei('0.01', 'ether')});
+      const tokenId = result.logs[0].args.tokenId;
 
+      await imageNftContract.setForSale(tokenId, salePrice, {from: owner});
+      await imageNftContract.removeFromSale(tokenId, {from: owner});
+
+      let priceResult = await imageNftContract.getTokenPrice(tokenId);
+      priceResult = priceResult.logs[0].args
+      console.log(priceResult);
+
+      assert.equal(priceResult, 0);
     });
+
+    it('should allow only the owner to remove the token from sale', async () => {
+
+    })
   });
 
 });
