@@ -40,20 +40,14 @@ contract ImageNft is ERC721, ERC721URIStorage, Ownable {
             return super.tokenURI(tokenId);
       }
 
-      function setForSale(uint256 tokenId, uint256 tokenPrice) external {
+      function setForSale(uint256 tokenId, uint256 tokenPrice) external onlyOwnerofToken(tokenId) {
             require(tokenPrice != 0);
-            //TODO: Make tokenOwner modifyer
-            address owner = ownerOf(tokenId);   //ownerOf will revert if this is an invalid token
-            require(owner == msg.sender);
-
             _price[tokenId] = tokenPrice;
 
             //emit Approval(ownerOf(tokenId), address(this), tokenId);
       }
 
-      function removeFromSale(uint256 tokenId) external {
-            address owner = ownerOf(tokenId);   //ownerOf will revert if this is an invalid token
-            require(owner == msg.sender);
+      function removeFromSale(uint256 tokenId) external onlyOwnerofToken(tokenId){
             _price[tokenId] = 0;
       }
 
@@ -73,4 +67,10 @@ contract ImageNft is ERC721, ERC721URIStorage, Ownable {
 
             _transfer(seller, buyer, tokenId);
       }
+
+      modifier onlyOwnerofToken(uint256 tokenId) {
+      address owner = ownerOf(tokenId);   //ownerOf will revert if this is an invalid token
+      require(owner == msg.sender);
+      _;
+    }
 }
